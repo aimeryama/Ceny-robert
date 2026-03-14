@@ -123,7 +123,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link rel="preconnect" href="./strona_files/saved_resource">
     <link rel="preconnect" href="https://api.binance.com/">
-    <link rel="preconnect" href="https://data-asg.goldprice.org/">
+    <link rel="preconnect" href="https://api.gold-api.com/price/XAU">
+    <link rel="preconnect" href="https://api.gold-api.com/price/XAG">
 
     <script src="./strona_files/saved_resource"></script>
     <style>
@@ -503,61 +504,33 @@
         }
 
         async function fetchMetals() {
-            try {
-                const goldRes = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
-                if (!goldRes.ok) throw new Error('Metals API failed');
+try {
+        const [goldRes, silverRes] = await Promise.all([
+            fetch("https://api.gold-api.com/price/XAU"),
+            fetch("https://api.gold-api.com/price/XAG")
+        ]);
 
-                const data = await goldRes.json();
-                const goldPrice = data.items[0].xauPrice;
-                const silverPrice = data.items[0].xagPrice;
+        const gold = await goldRes.json();
+        const silver = await silverRes.json();
 
-                hideErr('xau');
-                hideErr('xag');
+        const goldPrice = gold.price;
+        const silverPrice = silver.price;
 
-                document.getElementById('xau-price').innerHTML = `<div class="price-display mono">${fmt(goldPrice)}</div>`;
-                document.getElementById('xag-price').innerHTML = `<div class="price-display mono">${fmt(silverPrice)}</div>`;
+        document.getElementById('xau-price').innerHTML =
+            `<div class="price-display mono">${fmt(goldPrice)}</div>`;
 
-                const [lbmaGold, lbmaSilver] = await Promise.all([
-                    fetch('https://prices.lbma.org.uk/json/gold_pm.json'),
-                    fetch('https://prices.lbma.org.uk/json/silver.json')
-                ]);
+        document.getElementById('xag-price').innerHTML =
+            `<div class="price-display mono">${fmt(silverPrice)}</div>`;
 
-                const goldHist = await lbmaGold.json();
-                const silverHist = await lbmaSilver.json();
+        hideErr('xau');
+        hideErr('xag');
 
-                const calcChange = (hist, current, daysAgo) => {
-                    const targetDate = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000);
-                    let closestEntry = null;
-                    let minDiff = Infinity;
-                    for (const entry of hist) {
-                        const diff = Math.abs(new Date(entry.d).getTime() - targetDate.getTime());
-                        if (diff < minDiff) {
-                            minDiff = diff;
-                            closestEntry = entry;
-                        }
-                    }
-                    if (closestEntry && closestEntry.v && closestEntry.v[0]) {
-                        return ((current - closestEntry.v[0]) / closestEntry.v[0]) * 100;
-                    }
-                    return null;
-                };
-
-                ['xau', 'xag'].forEach(metal => {
-                    const price = metal === 'xau' ? goldPrice : silverPrice;
-                    const hist = metal === 'xau' ? goldHist : silverHist;
-                    document.getElementById(`${metal}-24h`).innerHTML = fmt24h(calcChange(hist, price, 1));
-                    document.getElementById(`${metal}-7d`).innerHTML = fmtChange(calcChange(hist, price, 7));
-                    document.getElementById(`${metal}-30d`).innerHTML = fmtChange(calcChange(hist, price, 30));
-                    document.getElementById(`${metal}-1y`).innerHTML = fmtChange(calcChange(hist, price, 365));
-                    document.getElementById(`${metal}-2y`).innerHTML = fmtChange(calcChange(hist, price, 730));
-                    document.getElementById(`${metal}-5y`).innerHTML = fmtChange(calcChange(hist, price, 1825));
-                });
-            } catch (e) {
-                console.error('Metals error:', e);
-                showErr('xau');
-                showErr('xag');
-            }
-        }
+    } catch (e) {
+        console.error('Metals error:', e);
+        showErr('xau');
+        showErr('xag');
+    }
+}
 
         async function updateAll() {
             await Promise.all([fetchCrypto(), fetchMetals()]);
