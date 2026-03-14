@@ -112,24 +112,44 @@ console.error(e);
 
 async function fetchMetals(){
 
-  try {
+ try {
 
-        const res = await fetch("https://api.metals.live/v1/spot");
+        const url = "https://api.allorigins.win/raw?url=https://api.goldapi.io/api/XAU/USD";
+
+        const res = await fetch(url, {
+            headers: {
+                "x-access-token": "goldapi-demo"
+            }
+        });
 
         const data = await res.json();
 
-        const gold = data.find(x => x.gold)?.gold;
-        const silver = data.find(x => x.silver)?.silver;
+        const gold = data.price;
 
         document.getElementById("gold-price").textContent =
             "$" + gold.toLocaleString("en-US",{maximumFractionDigits:2});
 
+        const silverUrl = "https://api.allorigins.win/raw?url=https://api.goldapi.io/api/XAG/USD";
+
+        const res2 = await fetch(silverUrl, {
+            headers: {
+                "x-access-token": "goldapi-demo"
+            }
+        });
+
+        const data2 = await res2.json();
+
+        const silver = data2.price;
+
         document.getElementById("silver-price").textContent =
             "$" + silver.toLocaleString("en-US",{maximumFractionDigits:2});
 
-    } catch(e) {
-        console.error("Metals API error", e);
+    } catch (err) {
+
+        console.error("Metals error:", err);
+
     }
+
 }
 async function update(){
 await Promise.all([
