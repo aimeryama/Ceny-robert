@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,22 +16,41 @@ background:#000;
 color:#fff;
 font-family:Inter,system-ui,sans-serif;
 margin:0;
-padding:0;
 }
 
 .mono{
 font-family:monospace;
 }
 
+.grid-container{
+display:grid;
+grid-template-columns:1fr;
+gap:1.5rem;
+padding:2rem;
+}
+
+@media(min-width:900px){
+.grid-container{
+grid-template-columns:1fr 1fr;
+}
+}
+
 .asset-card{
 background:#0a0a0a;
 border:1px solid #1a1a1a;
-padding:20px;
+padding:28px;
+border-radius:8px;
+}
+
+.asset-card h2{
+margin:0 0 16px 0;
+font-size:1.4rem;
 }
 
 .price-display{
-font-size:2rem;
+font-size:2.5rem;
 font-weight:700;
+margin-bottom:6px;
 }
 
 .positive{
@@ -43,25 +61,7 @@ color:#10b981;
 color:#ef4444;
 }
 
-.grid-container{
-display:grid;
-grid-template-columns:1fr;
-gap:1.25rem;
-padding:20px;
-}
-
-@media(min-width:768px){
-.grid-container{
-grid-template-columns:1fr 1fr;
-}
-}
-
-h2{
-margin-top:0;
-}
-
 </style>
-
 </head>
 
 <body>
@@ -121,31 +121,25 @@ margin-top:0;
 
 const REFRESH_INTERVAL = 60000
 
-
 function formatPrice(v){
-return "$" + Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
+return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
-
-
 
 async function fetchCrypto(){
 
 try{
 
-const btcResponse = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT")
-const ethResponse = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT")
+const btcRes = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT")
+const ethRes = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT")
 
-const btc = await btcResponse.json()
-const eth = await ethResponse.json()
-
+const btc = await btcRes.json()
+const eth = await ethRes.json()
 
 const btcPrice = parseFloat(btc.lastPrice)
 const btcChange = parseFloat(btc.priceChangePercent)
 
 const ethPrice = parseFloat(eth.lastPrice)
 const ethChange = parseFloat(eth.priceChangePercent)
-
-
 
 document.getElementById("btc-price").innerHTML =
 '<div class="price-display mono">'+formatPrice(btcPrice)+'</div>'
@@ -154,13 +148,11 @@ document.getElementById("btc-24h").innerHTML =
 '<span class="'+(btcChange>=0?'positive':'negative')+'">'+btcChange.toFixed(2)+'%</span>'
 
 
-
 document.getElementById("eth-price").innerHTML =
 '<div class="price-display mono">'+formatPrice(ethPrice)+'</div>'
 
 document.getElementById("eth-24h").innerHTML =
 '<span class="'+(ethChange>=0?'positive':'negative')+'">'+ethChange.toFixed(2)+'%</span>'
-
 
 }catch(e){
 
@@ -176,21 +168,22 @@ async function fetchMetals(){
 
 try{
 
-const goldResponse = await fetch("https://www.gold-api.com/price/XAU")
-const silverResponse = await fetch("https://www.gold-api.com/price/XAG")
+const goldRes = await fetch(
+"https://api.allorigins.win/raw?url=https://www.gold-api.com/price/XAU"
+)
 
-const gold = await goldResponse.json()
-const silver = await silverResponse.json()
+const silverRes = await fetch(
+"https://api.allorigins.win/raw?url=https://www.gold-api.com/price/XAG"
+)
 
-
+const gold = await goldRes.json()
+const silver = await silverRes.json()
 
 document.getElementById("gold-price").innerHTML =
 '<div class="price-display mono">'+formatPrice(gold.price)+'</div>'
 
-
 document.getElementById("silver-price").innerHTML =
 '<div class="price-display mono">'+formatPrice(silver.price)+'</div>'
-
 
 }catch(e){
 
@@ -208,8 +201,6 @@ await fetchCrypto()
 await fetchMetals()
 
 }
-
-
 
 updatePrices()
 
