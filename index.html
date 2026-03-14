@@ -115,8 +115,11 @@ const metals = await fetch(
 "https://api.coingecko.com/api/v3/simple/price?ids=tether-gold,silver&vs_currencies=usd"
 ).then(r=>r.json())
 
-document.getElementById("gold-price").textContent=money(metals["tether-gold"].usd)
-document.getElementById("silver-price").textContent=money(metals.silver.usd)
+document.getElementById("gold-price").textContent =
+money(metals["tether-gold"].usd)
+
+document.getElementById("silver-price").textContent =
+money(metals["silver-token"].usd)
 
 }
 
