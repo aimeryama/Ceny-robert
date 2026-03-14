@@ -96,30 +96,57 @@ function money(v){
 return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
-async function update(){
+async function crypto(){
 
-const crypto = await fetch(
-"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true"
+const btc = await fetch(
+"https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"
 ).then(r=>r.json())
 
-document.getElementById("btc-price").textContent=money(crypto.bitcoin.usd)
-document.getElementById("btc-change").textContent=crypto.bitcoin.usd_24h_change.toFixed(2)+"%"
-document.getElementById("btc-change").className="change "+(crypto.bitcoin.usd_24h_change>=0?"up":"down")
-
-document.getElementById("eth-price").textContent=money(crypto.ethereum.usd)
-document.getElementById("eth-change").textContent=crypto.ethereum.usd_24h_change.toFixed(2)+"%"
-document.getElementById("eth-change").className="change "+(crypto.ethereum.usd_24h_change>=0?"up":"down")
-
-
-const metals = await fetch(
-"https://api.coingecko.com/api/v3/simple/price?ids=tether-gold,silver&vs_currencies=usd"
+const eth = await fetch(
+"https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT"
 ).then(r=>r.json())
+
+document.getElementById("btc-price").textContent =
+money(btc.lastPrice)
+
+document.getElementById("btc-change").textContent =
+Number(btc.priceChangePercent).toFixed(2)+"%"
+
+document.getElementById("btc-change").className =
+"change "+(btc.priceChangePercent>=0?"up":"down")
+
+
+document.getElementById("eth-price").textContent =
+money(eth.lastPrice)
+
+document.getElementById("eth-change").textContent =
+Number(eth.priceChangePercent).toFixed(2)+"%"
+
+document.getElementById("eth-change").className =
+"change "+(eth.priceChangePercent>=0?"up":"down")
+
+}
+
+async function metals(){
+
+const res = await fetch(
+"https://api.metals.dev/v1/latest"
+)
+
+const data = await res.json()
 
 document.getElementById("gold-price").textContent =
-money(metals["tether-gold"].usd)
+money(data.metals.gold)
 
 document.getElementById("silver-price").textContent =
-money(metals["silver-token"].usd)
+money(data.metals.silver)
+
+}
+
+async function update(){
+
+await crypto()
+await metals()
 
 }
 
