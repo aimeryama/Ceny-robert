@@ -1,210 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bitcoin Price Live</title>
-
-<link rel="preconnect" href="https://api.binance.com">
-<link rel="preconnect" href="https://www.gold-api.com">
+<title>Crypto & Metals Prices</title>
 
 <style>
 
 body{
 background:#000;
 color:#fff;
-font-family:Inter,system-ui,sans-serif;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
 margin:0;
+padding:40px;
 }
 
-.mono{
-font-family:monospace;
-}
-
-.grid-container{
+.grid{
 display:grid;
 grid-template-columns:1fr;
-gap:1.5rem;
-padding:2rem;
+gap:40px;
 }
 
 @media(min-width:900px){
-.grid-container{
+.grid{
 grid-template-columns:1fr 1fr;
 }
 }
 
-.asset-card{
-background:#0a0a0a;
-border:1px solid #1a1a1a;
-padding:28px;
-border-radius:8px;
+.card{
+background:#050505;
+border:1px solid #222;
+padding:40px;
 }
 
-.asset-card h2{
-margin:0 0 16px 0;
-font-size:1.4rem;
+h2{
+margin:0 0 20px 0;
+font-size:28px;
 }
 
-.price-display{
-font-size:2.5rem;
+.price{
+font-size:48px;
 font-weight:700;
-margin-bottom:6px;
 }
 
-.positive{
-color:#10b981;
+.change{
+margin-top:8px;
+font-size:18px;
 }
 
-.negative{
+.up{
+color:#22c55e;
+}
+
+.down{
 color:#ef4444;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<main>
+<div class="grid">
 
-<div class="grid-container">
-
-<article id="btc" class="asset-card">
+<div class="card">
 <h2>Bitcoin</h2>
-
-<div id="btc-price">
-<div class="price-display mono">--</div>
+<div id="btc-price" class="price">--</div>
+<div id="btc-change" class="change"></div>
 </div>
 
-<div id="btc-24h"></div>
-
-</article>
-
-
-<article id="eth" class="asset-card">
+<div class="card">
 <h2>Ethereum</h2>
-
-<div id="eth-price">
-<div class="price-display mono">--</div>
+<div id="eth-price" class="price">--</div>
+<div id="eth-change" class="change"></div>
 </div>
 
-<div id="eth-24h"></div>
-
-</article>
-
-
-<article id="gold" class="asset-card">
+<div class="card">
 <h2>Gold</h2>
-
-<div id="gold-price">
-<div class="price-display mono">--</div>
+<div id="gold-price" class="price">--</div>
 </div>
 
-</article>
-
-
-<article id="silver" class="asset-card">
+<div class="card">
 <h2>Silver</h2>
-
-<div id="silver-price">
-<div class="price-display mono">--</div>
+<div id="silver-price" class="price">--</div>
 </div>
 
-</article>
-
 </div>
-
-</main>
 
 <script>
 
-const REFRESH_INTERVAL = 60000
-
-function formatPrice(v){
+function money(v){
 return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
-async function fetchCrypto(){
+async function crypto(){
 
-try{
+const btc=await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT").then(r=>r.json())
+const eth=await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT").then(r=>r.json())
 
-const btcRes = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT")
-const ethRes = await fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT")
+document.getElementById("btc-price").textContent=money(btc.lastPrice)
+document.getElementById("btc-change").textContent=btc.priceChangePercent+"%"
+document.getElementById("btc-change").className="change "+(btc.priceChangePercent>=0?"up":"down")
 
-const btc = await btcRes.json()
-const eth = await ethRes.json()
-
-const btcPrice = parseFloat(btc.lastPrice)
-const btcChange = parseFloat(btc.priceChangePercent)
-
-const ethPrice = parseFloat(eth.lastPrice)
-const ethChange = parseFloat(eth.priceChangePercent)
-
-document.getElementById("btc-price").innerHTML =
-'<div class="price-display mono">'+formatPrice(btcPrice)+'</div>'
-
-document.getElementById("btc-24h").innerHTML =
-'<span class="'+(btcChange>=0?'positive':'negative')+'">'+btcChange.toFixed(2)+'%</span>'
-
-
-document.getElementById("eth-price").innerHTML =
-'<div class="price-display mono">'+formatPrice(ethPrice)+'</div>'
-
-document.getElementById("eth-24h").innerHTML =
-'<span class="'+(ethChange>=0?'positive':'negative')+'">'+ethChange.toFixed(2)+'%</span>'
-
-}catch(e){
-
-console.log("crypto error",e)
+document.getElementById("eth-price").textContent=money(eth.lastPrice)
+document.getElementById("eth-change").textContent=eth.priceChangePercent+"%"
+document.getElementById("eth-change").className="change "+(eth.priceChangePercent>=0?"up":"down")
 
 }
 
-}
+async function metals(){
 
+const res = await fetch("https://api.metals.live/v1/spot")
+const data = await res.json()
 
+let gold
+let silver
 
-async function fetchMetals(){
+data.forEach(m=>{
+if(m.gold) gold=m.gold
+if(m.silver) silver=m.silver
+})
 
-try{
-
-const goldRes = await fetch(
-"https://api.allorigins.win/raw?url=https://www.gold-api.com/price/XAU"
-)
-
-const silverRes = await fetch(
-"https://api.allorigins.win/raw?url=https://www.gold-api.com/price/XAG"
-)
-
-const gold = await goldRes.json()
-const silver = await silverRes.json()
-
-document.getElementById("gold-price").innerHTML =
-'<div class="price-display mono">'+formatPrice(gold.price)+'</div>'
-
-document.getElementById("silver-price").innerHTML =
-'<div class="price-display mono">'+formatPrice(silver.price)+'</div>'
-
-}catch(e){
-
-console.log("metals error",e)
+document.getElementById("gold-price").textContent=money(gold)
+document.getElementById("silver-price").textContent=money(silver)
 
 }
 
-}
+async function update(){
 
-
-
-async function updatePrices(){
-
-await fetchCrypto()
-await fetchMetals()
+await crypto()
+await metals()
 
 }
 
-updatePrices()
+update()
 
-setInterval(updatePrices,REFRESH_INTERVAL)
+setInterval(update,60000)
 
 </script>
 
