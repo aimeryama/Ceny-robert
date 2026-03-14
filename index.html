@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Crypto & Metals Dashboard</title>
+<title>Markets</title>
 
 <style>
 
@@ -50,13 +50,8 @@ margin-top:8px;
 font-size:18px;
 }
 
-.up{
-color:#22c55e;
-}
-
-.down{
-color:#ef4444;
-}
+.up{color:#22c55e;}
+.down{color:#ef4444;}
 
 </style>
 
@@ -96,7 +91,7 @@ function money(v){
 return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
-async function fetchCrypto(){
+async function crypto(){
 
 try{
 
@@ -108,8 +103,7 @@ const eth = await fetch(
 "https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT"
 ).then(r=>r.json())
 
-document.getElementById("btc-price").textContent =
-money(btc.lastPrice)
+document.getElementById("btc-price").textContent = money(btc.lastPrice)
 
 document.getElementById("btc-change").textContent =
 Number(btc.priceChangePercent).toFixed(2)+"%"
@@ -117,9 +111,7 @@ Number(btc.priceChangePercent).toFixed(2)+"%"
 document.getElementById("btc-change").className =
 "change "+(btc.priceChangePercent>=0?"up":"down")
 
-
-document.getElementById("eth-price").textContent =
-money(eth.lastPrice)
+document.getElementById("eth-price").textContent = money(eth.lastPrice)
 
 document.getElementById("eth-change").textContent =
 Number(eth.priceChangePercent).toFixed(2)+"%"
@@ -128,45 +120,43 @@ document.getElementById("eth-change").className =
 "change "+(eth.priceChangePercent>=0?"up":"down")
 
 }catch(e){
-console.error("crypto error",e)
+console.log("crypto fail",e)
 }
 
 }
 
-async function fetchMetals(){
+async function metals(){
 
 try{
 
 const res = await fetch(
-"https://api.twelvedata.com/price?symbol=XAU/USD,XAG/USD&apikey=demo"
+"https://metals-api.com/api/latest?base=USD&symbols=XAU,XAG"
 )
 
 const data = await res.json()
 
-const gold = parseFloat(data["XAU/USD"].price)
-const silver = parseFloat(data["XAG/USD"].price)
+if(data && data.rates){
 
-document.getElementById("gold-price").textContent =
-money(gold)
+const gold = 1 / data.rates.XAU
+const silver = 1 / data.rates.XAG
 
-document.getElementById("silver-price").textContent =
-money(silver)
+document.getElementById("gold-price").textContent = money(gold)
+document.getElementById("silver-price").textContent = money(silver)
+
+}
 
 }catch(e){
-console.error("metals error",e)
+console.log("metals fail",e)
 }
 
 }
 
 async function update(){
-
-await fetchCrypto()
-await fetchMetals()
-
+await crypto()
+await metals()
 }
 
 update()
-
 setInterval(update,60000)
 
 </script>
