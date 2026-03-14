@@ -112,23 +112,25 @@ console.error(e);
 
 async function fetchMetals(){
 
-try{
+  try {
 
-let gold=await fetch("https://api.exchangerate.host/latest?base=XAU&symbols=USD");
-let g=await gold.json();
+        const res = await fetch("https://api.metals.live/v1/spot");
 
-let silver=await fetch("https://api.exchangerate.host/latest?base=XAG&symbols=USD");
-let s=await silver.json();
+        const data = await res.json();
 
-document.getElementById("gold-price").textContent=formatPrice(g.rates.USD);
-document.getElementById("silver-price").textContent=formatPrice(s.rates.USD);
+        const gold = data.find(x => x.gold)?.gold;
+        const silver = data.find(x => x.silver)?.silver;
 
-}catch(e){
-console.error(e);
+        document.getElementById("gold-price").textContent =
+            "$" + gold.toLocaleString("en-US",{maximumFractionDigits:2});
+
+        document.getElementById("silver-price").textContent =
+            "$" + silver.toLocaleString("en-US",{maximumFractionDigits:2});
+
+    } catch(e) {
+        console.error("Metals API error", e);
+    }
 }
-
-}
-
 async function update(){
 await Promise.all([
 fetchCrypto(),
