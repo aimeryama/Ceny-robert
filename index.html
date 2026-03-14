@@ -93,8 +93,6 @@ return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 
 async function crypto(){
 
-try{
-
 const btc = await fetch(
 "https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"
 ).then(r=>r.json())
@@ -103,7 +101,8 @@ const eth = await fetch(
 "https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT"
 ).then(r=>r.json())
 
-document.getElementById("btc-price").textContent = money(btc.lastPrice)
+document.getElementById("btc-price").textContent =
+money(btc.lastPrice)
 
 document.getElementById("btc-change").textContent =
 Number(btc.priceChangePercent).toFixed(2)+"%"
@@ -111,17 +110,14 @@ Number(btc.priceChangePercent).toFixed(2)+"%"
 document.getElementById("btc-change").className =
 "change "+(btc.priceChangePercent>=0?"up":"down")
 
-document.getElementById("eth-price").textContent = money(eth.lastPrice)
+document.getElementById("eth-price").textContent =
+money(eth.lastPrice)
 
 document.getElementById("eth-change").textContent =
 Number(eth.priceChangePercent).toFixed(2)+"%"
 
 document.getElementById("eth-change").className =
 "change "+(eth.priceChangePercent>=0?"up":"down")
-
-}catch(e){
-console.log("crypto fail",e)
-}
 
 }
 
@@ -130,33 +126,39 @@ async function metals(){
 try{
 
 const res = await fetch(
-"https://metals-api.com/api/latest?base=USD&symbols=XAU,XAG"
+"https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F"
 )
 
 const data = await res.json()
 
-if(data && data.rates){
+const quotes = data.quoteResponse.result
 
-const gold = 1 / data.rates.XAU
-const silver = 1 / data.rates.XAG
+const gold = quotes.find(q => q.symbol==="GC=F").regularMarketPrice
+const silver = quotes.find(q => q.symbol==="SI=F").regularMarketPrice
 
-document.getElementById("gold-price").textContent = money(gold)
-document.getElementById("silver-price").textContent = money(silver)
+document.getElementById("gold-price").textContent =
+money(gold)
 
-}
+document.getElementById("silver-price").textContent =
+money(silver)
 
 }catch(e){
-console.log("metals fail",e)
+
+console.log("metals error",e)
+
 }
 
 }
 
 async function update(){
+
 await crypto()
 await metals()
+
 }
 
 update()
+
 setInterval(update,60000)
 
 </script>
