@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Crypto & Metals Prices</title>
+<title>Crypto & Metals Dashboard</title>
 
 <style>
 
@@ -96,7 +96,9 @@ function money(v){
 return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
-async function crypto(){
+async function fetchCrypto(){
+
+try{
 
 const btc = await fetch(
 "https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"
@@ -125,28 +127,41 @@ Number(eth.priceChangePercent).toFixed(2)+"%"
 document.getElementById("eth-change").className =
 "change "+(eth.priceChangePercent>=0?"up":"down")
 
+}catch(e){
+console.error("crypto error",e)
 }
 
-async function metals(){
+}
+
+async function fetchMetals(){
+
+try{
 
 const res = await fetch(
-"https://api.metals.dev/v1/latest"
+"https://api.twelvedata.com/price?symbol=XAU/USD,XAG/USD&apikey=demo"
 )
 
 const data = await res.json()
 
+const gold = parseFloat(data["XAU/USD"].price)
+const silver = parseFloat(data["XAG/USD"].price)
+
 document.getElementById("gold-price").textContent =
-money(data.metals.gold)
+money(gold)
 
 document.getElementById("silver-price").textContent =
-money(data.metals.silver)
+money(silver)
+
+}catch(e){
+console.error("metals error",e)
+}
 
 }
 
 async function update(){
 
-await crypto()
-await metals()
+await fetchCrypto()
+await fetchMetals()
 
 }
 
