@@ -1,60 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Markets</title>
+<title>Live Prices</title>
 
 <style>
-
 body{
 background:#000;
 color:#fff;
-font-family:system-ui,-apple-system,Segoe UI,Roboto;
+font-family:Arial,Helvetica,sans-serif;
 margin:0;
 padding:40px;
 }
 
 .grid{
 display:grid;
-grid-template-columns:1fr;
-gap:40px;
-}
-
-@media(min-width:900px){
-.grid{
-grid-template-columns:1fr 1fr;
-}
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+max-width:1000px;
+margin:auto;
 }
 
 .card{
-background:#050505;
-border:1px solid #222;
-padding:40px;
-}
-
-h2{
-margin:0 0 20px 0;
-font-size:28px;
+background:#0f0f0f;
+border:1px solid #1f1f1f;
+border-radius:12px;
+padding:20px;
 }
 
 .price{
-font-size:48px;
+font-size:32px;
 font-weight:700;
+margin-top:10px;
 }
 
 .change{
-margin-top:8px;
-font-size:18px;
+margin-top:5px;
+font-size:14px;
 }
 
-.up{color:#22c55e;}
+.up{color:#10b981;}
 .down{color:#ef4444;}
-
 </style>
-
 </head>
 
 <body>
@@ -63,103 +51,93 @@ font-size:18px;
 
 <div class="card">
 <h2>Bitcoin</h2>
-<div id="btc-price" class="price">--</div>
+<div id="btc-price" class="price">loading</div>
 <div id="btc-change" class="change"></div>
 </div>
 
 <div class="card">
 <h2>Ethereum</h2>
-<div id="eth-price" class="price">--</div>
+<div id="eth-price" class="price">loading</div>
 <div id="eth-change" class="change"></div>
 </div>
 
 <div class="card">
 <h2>Gold</h2>
-<div id="gold-price" class="price">--</div>
+<div id="gold-price" class="price">loading</div>
 </div>
 
 <div class="card">
 <h2>Silver</h2>
-<div id="silver-price" class="price">--</div>
+<div id="silver-price" class="price">loading</div>
 </div>
 
 </div>
 
 <script>
 
-function money(v){
-return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
+function formatPrice(v){
+return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2});
 }
 
-async function crypto(){
-
-const btc = await fetch(
-"https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"
-).then(r=>r.json())
-
-const eth = await fetch(
-"https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT"
-).then(r=>r.json())
-
-document.getElementById("btc-price").textContent =
-money(btc.lastPrice)
-
-document.getElementById("btc-change").textContent =
-Number(btc.priceChangePercent).toFixed(2)+"%"
-
-document.getElementById("btc-change").className =
-"change "+(btc.priceChangePercent>=0?"up":"down")
-
-document.getElementById("eth-price").textContent =
-money(eth.lastPrice)
-
-document.getElementById("eth-change").textContent =
-Number(eth.priceChangePercent).toFixed(2)+"%"
-
-document.getElementById("eth-change").className =
-"change "+(eth.priceChangePercent>=0?"up":"down")
-
+function formatChange(v){
+let cls=v>=0?"up":"down";
+let arrow=v>=0?"▲":"▼";
+return `<span class="${cls}">${arrow} ${Math.abs(v).toFixed(2)}%</span>`;
 }
 
-async function metals(){
+async function fetchCrypto(){
+
+let assets=[
+{symbol:"BTCUSDT",price:"btc-price",change:"btc-change"},
+{symbol:"ETHUSDT",price:"eth-price",change:"eth-change"}
+];
+
+for(let a of assets){
 
 try{
 
-const res = await fetch(
-"https://query1.finance.yahoo.com/v7/finance/quote?symbols=GC=F,SI=F"
-)
+let r=await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${a.symbol}`);
+let d=await r.json();
 
-const data = await res.json()
-
-const quotes = data.quoteResponse.result
-
-const gold = quotes.find(q => q.symbol==="GC=F").regularMarketPrice
-const silver = quotes.find(q => q.symbol==="SI=F").regularMarketPrice
-
-document.getElementById("gold-price").textContent =
-money(gold)
-
-document.getElementById("silver-price").textContent =
-money(silver)
+document.getElementById(a.price).textContent=formatPrice(d.lastPrice);
+document.getElementById(a.change).innerHTML=formatChange(parseFloat(d.priceChangePercent));
 
 }catch(e){
+console.error(e);
+}
 
-console.log("metals error",e)
+}
 
+}
+
+async function fetchMetals(){
+
+try{
+
+let gold=await fetch("https://api.exchangerate.host/latest?base=XAU&symbols=USD");
+let g=await gold.json();
+
+let silver=await fetch("https://api.exchangerate.host/latest?base=XAG&symbols=USD");
+let s=await silver.json();
+
+document.getElementById("gold-price").textContent=formatPrice(g.rates.USD);
+document.getElementById("silver-price").textContent=formatPrice(s.rates.USD);
+
+}catch(e){
+console.error(e);
 }
 
 }
 
 async function update(){
-
-await crypto()
-await metals()
-
+await Promise.all([
+fetchCrypto(),
+fetchMetals()
+]);
 }
 
-update()
-
-setInterval(update,60000)
+update();
+setInterval(update,60000);
 
 </script>
 
