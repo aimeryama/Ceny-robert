@@ -113,7 +113,7 @@ document.getElementById("eth-change").className="change "+(eth.priceChangePercen
 
 async function metals(){
 
-const res = await fetch("https://api.metals.live/v1/spot")
+const res = await fetch("https://api.metals.live/v1/spot.json")
 const data = await res.json()
 
 let gold
