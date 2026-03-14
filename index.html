@@ -1,559 +1,191 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/dszoltysek/Downloads/11.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Primary Meta Tags -->
-    <title>Bitcoin Price Live | Real-Time BTC, ETH, Gold Prices - LivePrice</title>
-    <meta name="title" content="Bitcoin Price Live | Real-Time BTC, ETH, Gold Prices - LivePrice">
-    <meta name="description" content="Live Bitcoin, Ethereum, and Gold price tracking updated every 3 minutes. Real-time cryptocurrency and precious metals prices. No signup required, 100% free.">
-    <meta name="keywords" content="bitcoin price live, live bitcoin price, btc price now, ethereum price live, eth price now, gold price live, current bitcoin price, real-time crypto prices, bitcoin price today, ethereum price today, gold price today, live cryptocurrency prices, bitcoin tracker, ethereum tracker, btc usd live, eth usd live, solana price, dogecoin price, silver price live, crypto price tracker, live asset prices">
-    <meta name="author" content="LivePrice">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <link rel="canonical" href="https://liveprice.xyz/">
+<title>Bitcoin Price Live | Real-Time BTC, ETH, Gold Prices</title>
 
-    <!-- Enhanced SEO Meta Tags -->
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="1 day">
-    <meta name="distribution" content="global">
-    <meta name="rating" content="general">
-    <meta name="geo.region" content="US">
-    <meta name="geo.placename" content="United States">
-    <meta name="application-name" content="LivePrice">
-    <meta name="msapplication-TileColor" content="#000000">
-    <meta name="msapplication-tooltip" content="Live Bitcoin, Ethereum &amp; Gold Prices - Real-Time Tracker">
-    <meta name="msapplication-starturl" content="/">
+<link rel="preconnect" href="https://api.binance.com">
+<link rel="preconnect" href="https://api.gold-api.com">
 
-    <!-- Voice Search & AI Search Optimization -->
-    <meta name="search-keywords" content="what is the bitcoin price, bitcoin price right now, how much is bitcoin today, ethereum price right now, current gold price, what is bitcoin worth, live crypto prices, real-time bitcoin tracker, bitcoin cost today, ethereum value now">
-    <meta name="target-audience" content="cryptocurrency traders, investors, crypto enthusiasts, gold traders, precious metals investors, finance professionals">
-    <meta name="format-detection" content="telephone=no">
+<style>
+body{background:#000;color:#fff;font-family:Inter,system-ui,sans-serif}
+.mono{font-family:monospace}
+.asset-card{background:#0a0a0a;border:1px solid #1a1a1a}
+.price-display{font-size:2rem;font-weight:700}
+.positive{color:#10b981}
+.negative{color:#ef4444}
+.neutral{color:#6b7280}
+.grid-container{display:grid;grid-template-columns:1fr;gap:1.25rem}
+@media(min-width:768px){.grid-container{grid-template-columns:1fr 1fr}}
+</style>
+</head>
 
-    <!-- Cache Control for Fresh Prices -->
-    <meta http-equiv="Cache-Control" content="public, max-age=180">
-    <meta http-equiv="Expires" content="180">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://liveprice.xyz/">
-    <meta property="og:title" content="⚡ Bitcoin Price Live | Real-Time Crypto &amp; Gold Prices">
-    <meta property="og:description" content="Live Bitcoin, Ethereum, and Gold prices updated every 3 minutes. Free real-time cryptocurrency and precious metals tracker. No signup required.">
-    <meta property="og:image" content="https://liveprice.xyz/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="LivePrice - Real-Time Bitcoin, Ethereum, Solana &amp; Gold Price Tracker">
-    <meta property="og:site_name" content="LivePrice">
-    <meta property="og:locale" content="en_US">
-    <meta property="article:publisher" content="https://liveprice.xyz">
-    <meta property="article:modified_time" content="2025-01-20T00:00:00+00:00">
-
-    <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://liveprice.xyz/">
-    <meta property="twitter:title" content="⚡ Bitcoin Price Live | Real-Time Crypto &amp; Gold Prices">
-    <meta property="twitter:description" content="Live Bitcoin, Ethereum, Solana, Dogecoin, Gold &amp; Silver prices updated every 3 minutes. Free real-time cryptocurrency and precious metals tracker. No signup required.">
-    <meta property="twitter:image" content="https://liveprice.xyz/twitter-image.png">
-
-    <!-- Structured Data / JSON-LD for Rich Snippets -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "LivePrice - Real-Time Cryptocurrency and Precious Metals Price Tracker",
-      "alternateName": ["Live Price", "LivePrice", "Bitcoin Price Live", "Live Bitcoin Price", "Gold Price Live", "Crypto Live Prices", "Real-Time Price Tracker", "Live Asset Prices", "Cryptocurrency Price Tracker"],
-      "url": "https://liveprice.xyz",
-      "description": "Real-time cryptocurrency and precious metals price tracking terminal. Live updates for Bitcoin (BTC), Ethereum (ETH), Solana (SOL), Dogecoin (DOGE), Gold (XAU), and Silver (XAG) prices every 3 minutes. Free, no signup required.",
-      "applicationCategory": "FinanceApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
-      },
-      "datePublished": "2025-01-01",
-      "dateModified": "2025-01-20",
-      "isAccessibleForFree": true
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the live Bitcoin price right now?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "LivePrice displays the current Bitcoin (BTC/USDT) price updated every 3 minutes from Binance exchange. You can see the live Bitcoin price in USD, 24-hour percentage change, and historical performance over 7 days, 30 days, 1 year, 2 years, and 5 years."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How often do Bitcoin prices update?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "All cryptocurrency prices including Bitcoin, Ethereum, Solana, and Dogecoin update automatically every 3 minutes with real-time data from Binance exchange API."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the current gold price?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Live gold prices (XAU/USD) are updated every 3 minutes from GoldPrice.org and LBMA. LivePrice displays the current gold spot price per troy ounce in USD with historical data."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is LivePrice free?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, LivePrice is completely free with no subscriptions, registrations, or signup requirements. Access live real-time Bitcoin, Ethereum, gold, and cryptocurrency prices 24/7 at zero cost."
-          }
-        }
-      ]
-    }
-    </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-    <link rel="preconnect" href="./strona_files/saved_resource">
-    <link rel="preconnect" href="https://api.binance.com/">
-    <link rel="preconnect" href="https://api.gold-api.com/price/XAU">
-    <link rel="preconnect" href="https://api.gold-api.com/price/XAG">
-
-    <script src="./strona_files/saved_resource"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-        
-        * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        body { background: #000; color: #fff; }
-
-        @media (max-width: 768px) {
-            body { overflow-y: auto; min-height: 100vh; }
-        }
-
-       .grid-container {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.25rem;
-}
-
-@media (min-width: 768px) {
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1200px) {
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-        .asset-card {
-            background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
-            border: 1px solid #1a1a1a;
-            transition: border-color 0.3s;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .asset-card:hover { border-color: #2a2a2a; }
-
-        .skeleton {
-            background: linear-gradient(90deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s ease-in-out infinite;
-            border-radius: 4px;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .pulse-dot { animation: pulse 2s infinite; }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .positive { color: #10b981; }
-        .negative { color: #ef4444; }
-        .neutral { color: #6b7280; }
-
-        .stat-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 0.75rem;
-            margin-top: auto;
-            padding-top: 1.25rem;
-            border-top: 1px solid #171717;
-        }
-
-        .stat-cell {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.625rem 0.5rem;
-            background: #0a0a0a;
-            border: 1px solid #171717;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .stat-cell:hover { border-color: #262626; background: #0d0d0d; }
-
-        .stat-label {
-            font-size: 0.625rem;
-            color: #6b7280;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-
-        .stat-value { font-size: 0.8125rem; font-weight: 700; }
-        .price-display { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-
-        .change-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
-            font-size: 0.9375rem;
-            font-weight: 600;
-        }
-
-        .change-badge.positive { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .change-badge.negative { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-
-        .icon-wrapper {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .content-section {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 12px;
-        }
-
-        .content-section h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 1rem;
-        }
-
-        .content-section h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e5e7eb;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .content-section p {
-            color: #9ca3af;
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-
-        .content-section ul {
-            list-style: disc;
-            padding-left: 1.5rem;
-            color: #9ca3af;
-            line-height: 1.8;
-        }
-
-        .content-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .price-display { font-size: 1.75rem; }
-            .content-section { padding: 1.5rem; margin: 1rem; }
-            .content-section h2 { font-size: 1.5rem; }
-            .content-section h3 { font-size: 1.125rem; }
-        }
-    </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mb-0{margin-bottom:0px !important}.\!mb-2{margin-bottom:0.5rem !important}.mb-0\.5{margin-bottom:0.125rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-0\.5{margin-top:0.125rem}.mt-12{margin-top:3rem}.mt-3{margin-top:0.75rem}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-1\.5{height:0.375rem}.h-11{height:2.75rem}.h-2{height:0.5rem}.h-4{height:1rem}.h-7{height:1.75rem}.w-1\.5{width:0.375rem}.w-14{width:3.5rem}.w-2{width:0.5rem}.w-24{width:6rem}.w-48{width:12rem}.w-7{width:1.75rem}.min-w-0{min-width:0px}.max-w-6xl{max-width:72rem}.max-w-\[2560px\]{max-width:2560px}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-8{gap:2rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-emerald-500\/20{border-color:rgb(16 185 129 / 0.2)}.border-gray-800{--tw-border-opacity:1;border-color:rgb(31 41 55 / var(--tw-border-opacity, 1))}.border-gray-900{--tw-border-opacity:1;border-color:rgb(17 24 39 / var(--tw-border-opacity, 1))}.border-red-500\/20{border-color:rgb(239 68 68 / 0.2)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/10{background-color:rgb(16 185 129 / 0.1)}.bg-red-500\/5{background-color:rgb(239 68 68 / 0.05)}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-gray-400{--tw-gradient-from:#9ca3af var(--tw-gradient-from-position);--tw-gradient-to:rgb(156 163 175 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-indigo-500{--tw-gradient-from:#6366f1 var(--tw-gradient-from-position);--tw-gradient-to:rgb(99 102 241 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-orange-500{--tw-gradient-from:#f97316 var(--tw-gradient-from-position);--tw-gradient-to:rgb(249 115 22 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-purple-500{--tw-gradient-from:#a855f7 var(--tw-gradient-from-position);--tw-gradient-to:rgb(168 85 247 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-yellow-500{--tw-gradient-from:#eab308 var(--tw-gradient-from-position);--tw-gradient-to:rgb(234 179 8 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-yellow-600{--tw-gradient-from:#ca8a04 var(--tw-gradient-from-position);--tw-gradient-to:rgb(202 138 4 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.via-purple-600{--tw-gradient-to:rgb(147 51 234 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), #9333ea var(--tw-gradient-via-position), var(--tw-gradient-to)}.to-amber-500{--tw-gradient-to:#f59e0b var(--tw-gradient-to-position)}.to-amber-600{--tw-gradient-to:#d97706 var(--tw-gradient-to-position)}.to-cyan-500{--tw-gradient-to:#06b6d4 var(--tw-gradient-to-position)}.to-gray-500{--tw-gradient-to:#6b7280 var(--tw-gradient-to-position)}.to-orange-600{--tw-gradient-to:#ea580c var(--tw-gradient-to-position)}.to-purple-600{--tw-gradient-to:#9333ea var(--tw-gradient-to-position)}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.pb-4{padding-bottom:1rem}.pb-8{padding-bottom:2rem}.pt-6{padding-top:1.5rem}.pt-8{padding-top:2rem}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:text-emerald-400:hover{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}@media (min-width: 640px){.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}.sm\:justify-between{justify-content:space-between}.sm\:gap-6{gap:1.5rem}.sm\:gap-8{gap:2rem}.sm\:px-3{padding-left:0.75rem;padding-right:0.75rem}.sm\:py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.sm\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\:text-sm{font-size:0.875rem;line-height:1.25rem}}@media (min-width: 768px){.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}}</style></head>
 <body>
-    <main class="max-w-[2560px] mx-auto p-4">
-        
 
-        <section class="mb-8" aria-label="Live cryptocurrency and precious metals prices">
-            <div class="grid-container">
-                
-                <!-- Bitcoin -->
-                <article id="btc" class="asset-card rounded-xl p-6">
-                    <div class="mb-6">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="icon-wrapper bg-gradient-to-br from-orange-500 to-orange-600">
-                                <svg class="w-7 h-7" viewBox="0 0 32 32"><path fill="#FFF" d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.326l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.793.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.695l.95-3.805c1.172.293 4.929.872 4.37 3.11zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z"></path></svg>
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-white mb-0.5">Bitcoin</h2>
-                                <p class="text-xs text-gray-500 font-medium mono">BTC/USDT</p>
-                            </div>
-                        </div>
-                        <div id="btc-price"><div class="price-display mono">$66,971.31</div></div>
-                        <div id="btc-24h" class="mt-3"><div class="change-badge negative"><span>▼</span><span class="mono">2.84%</span></div></div>
-                        <div id="btc-error" class="hidden px-3 py-2 bg-red-500/5 border border-red-500/20 rounded-lg text-xs text-red-400 font-medium mt-3">⚠ Failed to fetch data</div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-cell"><div class="stat-label">7D</div><div id="btc-7d" class="stat-value"><span class="negative mono">-8.47%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">30D</div><div id="btc-30d" class="stat-value"><span class="negative mono">-26.64%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">1Y</div><div id="btc-1y" class="stat-value"><span class="negative mono">-30.08%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">2Y</div><div id="btc-2y" class="stat-value"><span class="positive mono">+34.16%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">5Y</div><div id="btc-5y" class="stat-value"><span class="positive mono">+41.59%</span></div></div>
-                    </div>
-                </article>
+<main class="max-w-[2560px] mx-auto p-4">
 
-                <!-- Ethereum -->
-                <article id="eth" class="asset-card rounded-xl p-6">
-                    <div class="mb-6">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="icon-wrapper bg-gradient-to-br from-indigo-500 to-purple-600">
-                                <svg class="w-7 h-7" viewBox="0 0 32 32"><g fill="#FFF"><path opacity=".6" d="M16.498 4v8.87l7.497 3.35z"></path><path d="M16.498 4L9 16.22l7.498-3.35z"></path><path opacity=".6" d="M16.498 21.968v6.027L24 17.616z"></path><path d="M16.498 27.995v-6.028L9 17.616z"></path><path opacity=".2" d="M16.498 20.573l7.497-4.353-7.497-3.348z"></path><path opacity=".6" d="M9 16.22l7.498 4.353v-7.701z"></path></g></svg>
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-white mb-0.5">Ethereum</h2>
-                                <p class="text-xs text-gray-500 font-medium mono">ETH/USDT</p>
-                            </div>
-                        </div>
-                        <div id="eth-price"><div class="price-display mono">$1,946.17</div></div>
-                        <div id="eth-24h" class="mt-3"><div class="change-badge negative"><span>▼</span><span class="mono">3.02%</span></div></div>
-                        <div id="eth-error" class="hidden px-3 py-2 bg-red-500/5 border border-red-500/20 rounded-lg text-xs text-red-400 font-medium mt-3">⚠ Failed to fetch data</div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-cell"><div class="stat-label">7D</div><div id="eth-7d" class="stat-value"><span class="negative mono">-9.41%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">30D</div><div id="eth-30d" class="stat-value"><span class="negative mono">-37.13%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">1Y</div><div id="eth-1y" class="stat-value"><span class="negative mono">-25.22%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">2Y</div><div id="eth-2y" class="stat-value"><span class="negative mono">-26.84%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">5Y</div><div id="eth-5y" class="stat-value"><span class="positive mono">+5.76%</span></div></div>
-                    </div>
-                </article>
+<div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:12px;color:#9ca3af">
+<div>Last update: <span id="updateTime">--:--</span></div>
+<div>Refresh in <span id="countdown">60s</span></div>
+</div>
 
-                
+<section class="mb-8">
+<div class="grid-container">
 
-                <!-- Gold -->
-                <article id="xau" class="asset-card rounded-xl p-6">
-                    <div class="mb-6">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="icon-wrapper bg-gradient-to-br from-yellow-500 to-amber-600">
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-white mb-0.5">Gold</h2>
-                                <p class="text-xs text-gray-500 font-medium mono">XAU/USD</p>
-                            </div>
-                        </div>
-                        <div id="xau-price"><div class="price-display mono">$5,056.55</div></div>
-                        <div id="xau-24h" class="mt-3"><div class="change-badge positive"><span>▲</span><span class="mono">0.50%</span></div></div>
-                        <div id="xau-error" class="hidden px-3 py-2 bg-red-500/5 border border-red-500/20 rounded-lg text-xs text-red-400 font-medium mt-3">⚠ Failed to fetch data</div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-cell"><div class="stat-label">7D</div><div id="xau-7d" class="stat-value"><span class="positive mono">+1.43%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">30D</div><div id="xau-30d" class="stat-value"><span class="positive mono">+9.62%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">1Y</div><div id="xau-1y" class="stat-value"><span class="positive mono">+74.64%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">2Y</div><div id="xau-2y" class="stat-value"><span class="positive mono">+150.92%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">5Y</div><div id="xau-5y" class="stat-value"><span class="positive mono">+178.39%</span></div></div>
-                    </div>
-                </article>
+<!-- BTC -->
+<article id="btc" class="asset-card p-6">
+<h2>Bitcoin</h2>
+<div id="btc-price"><div class="price-display mono">--</div></div>
+<div id="btc-24h"></div>
+<div id="btc-error" style="display:none;color:red">API error</div>
+</article>
 
-                <!-- Silver -->
-                <article id="xag" class="asset-card rounded-xl p-6">
-                    <div class="mb-6">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="icon-wrapper bg-gradient-to-br from-gray-400 to-gray-500">
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-white mb-0.5">Silver</h2>
-                                <p class="text-xs text-gray-500 font-medium mono">XAG/USD</p>
-                            </div>
-                        </div>
-                        <div id="xag-price"><div class="price-display mono">$83.88</div></div>
-                        <div id="xag-24h" class="mt-3"><div class="change-badge positive"><span>▲</span><span class="mono">1.94%</span></div></div>
-                        <div id="xag-error" class="hidden px-3 py-2 bg-red-500/5 border border-red-500/20 rounded-lg text-xs text-red-400 font-medium mt-3">⚠ Failed to fetch data</div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-cell"><div class="stat-label">7D</div><div id="xag-7d" class="stat-value"><span class="negative mono">-7.41%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">30D</div><div id="xag-30d" class="stat-value"><span class="negative mono">-0.23%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">1Y</div><div id="xag-1y" class="stat-value"><span class="positive mono">+164.35%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">2Y</div><div id="xag-2y" class="stat-value"><span class="positive mono">+266.04%</span></div></div>
-                        <div class="stat-cell"><div class="stat-label">5Y</div><div id="xag-5y" class="stat-value"><span class="positive mono">+209.86%</span></div></div>
-                    </div>
-                </article>
+<!-- ETH -->
+<article id="eth" class="asset-card p-6">
+<h2>Ethereum</h2>
+<div id="eth-price"><div class="price-display mono">--</div></div>
+<div id="eth-24h"></div>
+<div id="eth-error" style="display:none;color:red">API error</div>
+</article>
 
-                
+<!-- GOLD -->
+<article id="xau" class="asset-card p-6">
+<h2>Gold</h2>
+<div id="xau-price"><div class="price-display mono">--</div></div>
+<div id="xau-error" style="display:none;color:red">API error</div>
+</article>
 
-       
+<!-- SILVER -->
+<article id="xag" class="asset-card p-6">
+<h2>Silver</h2>
+<div id="xag-price"><div class="price-display mono">--</div></div>
+<div id="xag-error" style="display:none;color:red">API error</div>
+</article>
 
-        
-    </main>
+</div>
+</section>
 
-    <script>
-        let countdown = 60;
-        const REFRESH_INTERVAL = 60000;
+<div style="font-size:11px;color:#666;margin-top:10px">
+Content updated at <span id="contentUpdateTime">--:--</span>
+</div>
 
-        function fmt(val, decimals = 2) {
-            if (val < 1) decimals = Math.max(4, decimals);
-            return '$' + val.toLocaleString('en-US', {
-                minimumFractionDigits: decimals,
-                maximumFractionDigits: decimals
-            });
-        }
+</main>
 
-        function fmtChange(val) {
-            if (val == null || isNaN(val)) return '<span class="neutral">—</span>';
-            const cls = val >= 0 ? 'positive' : 'negative';
-            if (Math.abs(val) >= 10000) {
-                const kVal = (val / 1000).toFixed(1);
-                return `<span class="${cls} mono">${val >= 0 ? '+' : ''}${kVal}K%</span>`;
-            }
-            return `<span class="${cls} mono">${val >= 0 ? '+' : ''}${val.toFixed(2)}%</span>`;
-        }
+<script>
 
-        function fmt24h(val) {
-            if (val == null || isNaN(val)) return '<span class="neutral text-sm">No change</span>';
-            const cls = val >= 0 ? 'positive' : 'negative';
-            const arrow = val >= 0 ? '▲' : '▼';
-            return `<div class="change-badge ${cls}"><span>${arrow}</span><span class="mono">${Math.abs(val).toFixed(2)}%</span></div>`;
-        }
+let countdown = 60
+const REFRESH_INTERVAL = 60000
 
-        function showErr(id) { document.getElementById(`${id}-error`)?.classList.remove('hidden'); }
-        function hideErr(id) { document.getElementById(`${id}-error`)?.classList.add('hidden'); }
-
-        async function fetchHistoricalPrice(symbol, daysAgo) {
-            const targetTime = Date.now() - (daysAgo * 24 * 60 * 60 * 1000);
-            try {
-                const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1d&startTime=${targetTime}&limit=1`);
-                const data = await res.json();
-                if (data && data.length > 0 && data[0][1]) return parseFloat(data[0][1]);
-            } catch (e) {
-                console.error(`Error fetching historical price for ${symbol}:`, e);
-            }
-            return null;
-        }
-
-        async function fetchCrypto() {
-            const assets = [
-                { id: 'btc', symbol: 'BTCUSDT' },
-                { id: 'eth', symbol: 'ETHUSDT' },
-                { id: 'sol', symbol: 'SOLUSDT' },
-                { id: 'doge', symbol: 'DOGEUSDT' }
-            ];
-
-            for (const asset of assets) {
-                try {
-                    const ticker = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${asset.symbol}`);
-                    const tickerData = await ticker.json();
-                    if (tickerData.code) throw new Error('API Error');
-
-                    const currentPrice = parseFloat(tickerData.lastPrice);
-                    const priceChange24h = parseFloat(tickerData.priceChangePercent);
-
-                    hideErr(asset.id);
-                    document.getElementById(`${asset.id}-price`).innerHTML = `<div class="price-display mono">${fmt(currentPrice)}</div>`;
-                    document.getElementById(`${asset.id}-24h`).innerHTML = fmt24h(priceChange24h);
-
-                    const periods = [
-                        { days: 7, id: '7d' },
-                        { days: 30, id: '30d' },
-                        { days: 365, id: '1y' },
-                        { days: 730, id: '2y' },
-                        { days: 1825, id: '5y' }
-                    ];
-
-                    for (const period of periods) {
-                        const historicalPrice = await fetchHistoricalPrice(asset.symbol, period.days);
-                        if (historicalPrice) {
-                            const change = ((currentPrice - historicalPrice) / historicalPrice) * 100;
-                            document.getElementById(`${asset.id}-${period.id}`).innerHTML = fmtChange(change);
-                        } else {
-                            document.getElementById(`${asset.id}-${period.id}`).innerHTML = '<span class="neutral">—</span>';
-                        }
-                    }
-                } catch (e) {
-                    console.error(`Error fetching ${asset.id}:`, e);
-                    showErr(asset.id);
-                }
-            }
-        }
-
-        async function fetchMetals() {
-try {
-        const [goldRes, silverRes] = await Promise.all([
-            fetch("https://api.gold-api.com/price/XAU"),
-            fetch("https://api.gold-api.com/price/XAG")
-        ]);
-
-        const gold = await goldRes.json();
-        const silver = await silverRes.json();
-
-        const goldPrice = gold.price;
-        const silverPrice = silver.price;
-
-        document.getElementById('xau-price').innerHTML =
-            `<div class="price-display mono">${fmt(goldPrice)}</div>`;
-
-        document.getElementById('xag-price').innerHTML =
-            `<div class="price-display mono">${fmt(silverPrice)}</div>`;
-
-        hideErr('xau');
-        hideErr('xag');
-
-    } catch (e) {
-        console.error('Metals error:', e);
-        showErr('xau');
-        showErr('xag');
-    }
+function fmt(v){
+return "$"+Number(v).toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
-        async function updateAll() {
-            await Promise.all([fetchCrypto(), fetchMetals()]);
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById('updateTime').textContent = timeString;
-            document.getElementById('contentUpdateTime').textContent = timeString;
-            countdown = 180;
-        }
+function showErr(id){
+const el=document.getElementById(id+"-error")
+if(el) el.style.display="block"
+}
 
-        function tick() {
-            countdown--;
-            document.getElementById('countdown').textContent = countdown + 's';
-            if (countdown <= 0) countdown = 180;
-        }
+function hideErr(id){
+const el=document.getElementById(id+"-error")
+if(el) el.style.display="none"
+}
 
-        updateAll();
-        setInterval(updateAll, REFRESH_INTERVAL);
-        setInterval(tick, 1000);
-    </script>
+async function fetchCrypto(){
 
-</body></html>
+const assets=[
+{ id:"btc", symbol:"BTCUSDT"},
+{ id:"eth", symbol:"ETHUSDT"}
+]
+
+for(const a of assets){
+
+try{
+
+const r=await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${a.symbol}`)
+const d=await r.json()
+
+const price=parseFloat(d.lastPrice)
+const change=parseFloat(d.priceChangePercent)
+
+document.getElementById(a.id+"-price").innerHTML=`<div class="price-display mono">${fmt(price)}</div>`
+document.getElementById(a.id+"-24h").innerHTML=
+`<span class="${change>=0?'positive':'negative'}">${change.toFixed(2)}%</span>`
+
+hideErr(a.id)
+
+}catch(e){
+showErr(a.id)
+}
+
+}
+
+}
+
+async function fetchMetals(){
+
+try{
+
+const [g,s]=await Promise.all([
+fetch("https://api.gold-api.com/price/XAU"),
+fetch("https://api.gold-api.com/price/XAG")
+])
+
+const gold=await g.json()
+const silver=await s.json()
+
+document.getElementById("xau-price").innerHTML=`<div class="price-display mono">${fmt(gold.price)}</div>`
+document.getElementById("xag-price").innerHTML=`<div class="price-display mono">${fmt(silver.price)}</div>`
+
+hideErr("xau")
+hideErr("xag")
+
+}catch(e){
+
+showErr("xau")
+showErr("xag")
+
+}
+
+}
+
+async function updateAll(){
+
+await Promise.all([
+fetchCrypto(),
+fetchMetals()
+])
+
+const now=new Date().toLocaleTimeString()
+
+const u=document.getElementById("updateTime")
+const c=document.getElementById("contentUpdateTime")
+
+if(u) u.textContent=now
+if(c) c.textContent=now
+
+countdown=60
+
+}
+
+function tick(){
+
+countdown--
+
+const el=document.getElementById("countdown")
+if(el) el.textContent=countdown+"s"
+
+if(countdown<=0) countdown=60
+
+}
+
+updateAll()
+
+setInterval(updateAll,REFRESH_INTERVAL)
+setInterval(tick,1000)
+
+</script>
+
+</body>
+</html>
